@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Management Calculator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+  }
+  h2 {
+    color: #58a6ff;
+    border-bottom: 2px solid #30363d;
+    padding-bottom: 6px;
+    margin-bottom: 20px;
+  }
+  .section {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 12px;
+    width: 320px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  label {
+    display: block;
+    margin: 8px 0 3px;
+    color: #9da5b4;
+  }
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    background: #0d1117;
+    color: #fff;
+  }
+  button {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #238636;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #2ea043;
+  }
+  .result {
+    margin-top: 10px;
+    padding: 10px;
+    background: #21262d;
+    border-radius: 8px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h2>Risk Management Calculator</h2>
+
+<!-- Position Size Section -->
+<div class="section">
+  <h3>1️⃣ Position Size</h3>
+  <label>Entry Price:</label>
+  <input id="entry" type="number" step="0.0001" placeholder="">
+  <label>Stop Loss:</label>
+  <input id="sl" type="number" step="0.0001" placeholder="">
+  <label>Risk USD:</label>
+  <input id="riskusd" type="number" step="0.01" placeholder="">
+
+  <button onclick="calcPosition()">Calculate Position Size</button>
+  <div class="result" id="positionResult"></div>
+</div>
+
+<!-- Profit Section -->
+<div class="section">
+  <h3>2️⃣ Profit Calculator</h3>
+  <label>Take Profit (TP):</label>
+  <input id="tp" type="number" step="0.0001" placeholder="">
+  <label>Entry Price:</label>
+  <input id="entryProfit" type="number" step="0.0001" placeholder="">
+  <label>Coin Amount (e.g. ETH):</label>
+  <input id="coinAmountProfit" type="number" step="0.0000001" placeholder="">
+
+  <button onclick="calcProfit()">Calculate Profit</button>
+  <div class="result" id="profitResult"></div>
+</div>
+
+<!-- Risk Section -->
+<div class="section">
+  <h3>3️⃣ Risk Calculator</h3>
+  <label>Entry Price:</label>
+  <input id="entryRisk" type="number" step="0.0001" placeholder="">
+  <label>Stop Loss (SL):</label>
+  <input id="slRisk" type="number" step="0.0001" placeholder="">
+  <label>Coin Amount (e.g. ETH):</label>
+  <input id="coinAmountRisk" type="number" step="0.0000001" placeholder="">
+
+  <button onclick="calcRisk()">Calculate Risk</button>
+  <div class="result" id="riskResult"></div>
+</div>
+
+<script>
+function calcPosition() {
+  const entry = parseFloat(document.getElementById('entry').value);
+  const sl = parseFloat(document.getElementById('sl').value);
+  const riskUSD = parseFloat(document.getElementById('riskusd').value);
+
+  if (isNaN(entry) || isNaN(sl) || isNaN(riskUSD)) {
+    document.getElementById('positionResult').innerHTML = "⚠️ Please fill all inputs.";
+    return;
+  }
+
+  const diff = Math.abs(entry - sl);
+  const amount = riskUSD / diff;
+  const usdValue = amount * entry;
+
+  document.getElementById('positionResult').innerHTML =
+    `Price Difference: <b>$${diff.toFixed(2)}</b><br>` +
+    `Amount: <b>${amount.toFixed(6)}</b><br>` +
+    `Total Value: <b>$${usdValue.toFixed(2)}</b>`;
+}
+
+function calcProfit() {
+  const tp = parseFloat(document.getElementById('tp').value);
+  const entry = parseFloat(document.getElementById('entryProfit').value);
+  const amount = parseFloat(document.getElementById('coinAmountProfit').value);
+
+  if (isNaN(tp) || isNaN(entry) || isNaN(amount)) {
+    document.getElementById('profitResult').innerHTML = "⚠️ Please fill all inputs.";
+    return;
+  }
+
+  const profitPerCoin = tp - entry;
+  const totalProfit = profitPerCoin * amount;
+
+  document.getElementById('profitResult').innerHTML =
+    `Profit Difference: <b>$${profitPerCoin.toFixed(2)}</b><br>` +
+    `Total Profit: <b>$${totalProfit.toFixed(2)}</b>`;
+}
+
+function calcRisk() {
+  const entry = parseFloat(document.getElementById('entryRisk').value);
+  const sl = parseFloat(document.getElementById('slRisk').value);
+  const amount = parseFloat(document.getElementById('coinAmountRisk').value);
+
+  if (isNaN(entry) || isNaN(sl) || isNaN(amount)) {
+    document.getElementById('riskResult').innerHTML = "⚠️ Please fill all inputs.";
+    return;
+  }
+
+  const lossPerCoin = entry - sl;
+  const totalLoss = lossPerCoin * amount;
+
+  document.getElementById('riskResult').innerHTML =
+    `Risk Difference: <b>$${lossPerCoin.toFixed(2)}</b><br>` +
+    `Total Risk: <b>$${totalLoss.toFixed(2)}</b>`;
+}
+</script>
+
+</body>
+</html>
