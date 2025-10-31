@@ -72,11 +72,11 @@
 <div class="section">
   <h3>1️⃣ Position Size</h3>
   <label>Entry Price:</label>
-  <input id="entry" type="number" step="0.0001" placeholder="">
+  <input id="entry" type="number" step="0.0001">
   <label>Stop Loss:</label>
-  <input id="sl" type="number" step="0.0001" placeholder="">
+  <input id="sl" type="number" step="0.0001">
   <label>Risk USD:</label>
-  <input id="riskusd" type="number" step="0.01" placeholder="">
+  <input id="riskusd" type="number" step="0.01">
 
   <button onclick="calcPosition()">Calculate Position Size</button>
   <div class="result" id="positionResult"></div>
@@ -86,11 +86,11 @@
 <div class="section">
   <h3>2️⃣ Profit Calculator</h3>
   <label>Take Profit (TP):</label>
-  <input id="tp" type="number" step="0.0001" placeholder="">
+  <input id="tp" type="number" step="0.0001">
   <label>Entry Price:</label>
-  <input id="entryProfit" type="number" step="0.0001" placeholder="">
-  <label>Coin Amount </label>
-  <input id="coinAmountProfit" type="number" step="0.0000001" placeholder="">
+  <input id="entryProfit" type="number" step="0.0001">
+  <label>Coin Amount</label>
+  <input id="coinAmountProfit" type="number" step="0.0000001">
 
   <button onclick="calcProfit()">Calculate Profit</button>
   <div class="result" id="profitResult"></div>
@@ -100,11 +100,11 @@
 <div class="section">
   <h3>3️⃣ Risk Calculator</h3>
   <label>Entry Price:</label>
-  <input id="entryRisk" type="number" step="0.0001" placeholder="">
+  <input id="entryRisk" type="number" step="0.0001">
   <label>Stop Loss (SL):</label>
-  <input id="slRisk" type="number" step="0.0001" placeholder="">
-  <label>Coin Amount </label>
-  <input id="coinAmountRisk" type="number" step="0.0000001" placeholder="">
+  <input id="slRisk" type="number" step="0.0001">
+  <label>Coin Amount</label>
+  <input id="coinAmountRisk" type="number" step="0.0000001">
 
   <button onclick="calcRisk()">Calculate Risk</button>
   <div class="result" id="riskResult"></div>
@@ -125,10 +125,18 @@ function calcPosition() {
   const amount = riskUSD / diff;
   const usdValue = amount * entry;
 
+  // Natiijo
   document.getElementById('positionResult').innerHTML =
     `Price Difference: <b>$${diff.toFixed(2)}</b><br>` +
     `Amount: <b>${amount.toFixed(6)}</b><br>` +
     `Total Value: <b>$${usdValue.toFixed(2)}</b>`;
+
+  // Autofill inputs for profit & risk sections
+  document.getElementById('entryProfit').value = entry;
+  document.getElementById('entryRisk').value = entry;
+  document.getElementById('slRisk').value = sl;
+  document.getElementById('coinAmountProfit').value = amount.toFixed(6);
+  document.getElementById('coinAmountRisk').value = amount.toFixed(6);
 }
 
 function calcProfit() {
